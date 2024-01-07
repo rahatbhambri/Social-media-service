@@ -28,9 +28,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-DB_CONN = "mongodb://localhost:27017"
-DB_CLIENT = pymongo.MongoClient(DB_CONN)
-Db = DB_CLIENT['config']
+# DB_CONN = "mongodb://localhost:27017"
+# DB_CLIENT = pymongo.MongoClient(DB_CONN)
+# Db = DB_CLIENT['config']
+Db = ""
 # Application definition
 
 INSTALLED_APPS = [
@@ -81,12 +82,12 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'djongo',
-        'NAME': 'config',
-        'HOST' : 'localhost',
-        'PORT' : 27017, 
-    }
+    # 'default': {
+    #     'ENGINE': 'djongo',
+    #     'NAME': 'config',
+    #     'HOST' : 'localhost',
+    #     'PORT' : 27017, 
+    # }
 }
 
 
