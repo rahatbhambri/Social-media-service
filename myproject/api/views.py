@@ -6,6 +6,7 @@ import json
 from django.http import JsonResponse
 import random
 from api.utils import timeit
+from myproject.settings import mid_p
 
 
 
@@ -15,11 +16,15 @@ def getData(request):
     serializer  = ItemSerializer(items, many = True)
     return Response(serializer.data)   
 
-@api_view(['GET'])
+@api_view(['GET', 'POST'])
 def getSampleData(request):
-    from myproject.settings import mid_p
-    print(mid_p)
-    return Response({"1": "Sample data "})
+    if request.method == 'GET':
+        print(mid_p)
+        return Response({"1": "Sample data "})
+    else:
+        return Response({"1": "POST data "})
+
+
 
 
 @api_view(['POST'])
