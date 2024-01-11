@@ -17,6 +17,8 @@ def getData(request):
 
 @api_view(['GET'])
 def getSampleData(request):
+    from myproject.settings import mid_p
+    print(mid_p)
     return Response({"1": "Sample data "})
 
 

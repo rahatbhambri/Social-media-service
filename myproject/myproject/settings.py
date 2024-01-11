@@ -47,6 +47,10 @@ INSTALLED_APPS = [
     'djongo'
 ]
 
+mid_p = 'myproject.middlewares.request_counter.RequestCounter'
+
+
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -55,6 +59,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    mid_p,
+    
 ]
 
 ROOT_URLCONF = 'myproject.urls'
