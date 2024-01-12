@@ -3,3 +3,6 @@ requests
 djangorestframework
 pymongo
 djongo 
+celery<6
+django-celery-results
+

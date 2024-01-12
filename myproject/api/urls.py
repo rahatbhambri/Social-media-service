@@ -5,5 +5,6 @@ urlpatterns = [
     path('', views.getSampleData),
     path('add/', views.addItem),
     path('getOrder', views.getOrder),
-    path('pushOrders', views.insertOrders)
+    path('pushOrders', views.insertOrders),
+    path('getTask', views.monitorTask)
 ]

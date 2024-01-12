@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import pymongo
+from django.core.cache import cache 
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -34,6 +36,7 @@ ALLOWED_HOSTS = []
 Db = ""
 # Application definition
 
+CELERY_BROKER_URL = 'memory://localhost/'
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -44,7 +47,9 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'base',
-    'djongo'
+    'djongo', 
+    'django_celery_results',
+    'celery',
 ]
 
 mid_p = 'myproject.middlewares.request_counter.RequestCounter'

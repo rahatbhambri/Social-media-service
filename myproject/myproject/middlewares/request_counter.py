@@ -27,10 +27,11 @@ class RequestCounter:
             if name:
                 print("hellooo")
                 phone = cache.get(str(name), None)
-                if phone :
-                    response.data['phone'] = phone
-                else:
-                    cache.set(str(name), self.calcPhone(str(name)))
+                if not phone :
+                    phone = self.calcPhone(str(name))
+                    cache.set(str(name), phone)
+                response.data['phone'] = phone
+                    
         if response.status_code == 200:
             response.data['request_count'] = self.rc
             response._is_rendered = False 

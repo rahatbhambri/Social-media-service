@@ -7,6 +7,8 @@ from django.http import JsonResponse
 import random
 from api.utils import timeit
 from myproject.settings import mid_p
+from myproject.tasks import delayed_sum
+from celery.result import AsyncResult
 
 
 
@@ -20,11 +22,22 @@ def getData(request):
 def getSampleData(request):
     if request.method == 'GET':
         print(mid_p)
-        return Response({"1": "Sample data "})
+        obj = delayed_sum.delay(5, 7)
+        return Response({"1": "Sample data ", "task_id" : obj.id})
     else:
         return Response({"1": "POST data "})
 
 
+@api_view(['GET'])
+def monitorTask(request):
+    t_id = str(request.GET.get('task_id'))
+    result = AsyncResult(t_id)
+
+    response_data = {
+        'task_id': t_id,
+        'status': result.status,
+    }
+    return Response(response_data)
 
 
 @api_view(['POST'])
