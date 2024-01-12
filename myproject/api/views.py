@@ -8,7 +8,9 @@ import random
 from api.utils import timeit
 from myproject.settings import mid_p
 from myproject.tasks import delayed_sum
+from myproject.async_tasks import run_tasks
 from celery.result import AsyncResult
+import asyncio
 
 
 
@@ -22,8 +24,13 @@ def getData(request):
 def getSampleData(request):
     if request.method == 'GET':
         print(mid_p)
-        obj = delayed_sum.delay(5, 7)
-        return Response({"1": "Sample data ", "task_id" : obj.id})
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(run_tasks())
+        loop.close()
+        
+        return Response({"1": "Sample data "})
     else:
         return Response({"1": "POST data "})
 
