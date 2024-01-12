@@ -6,6 +6,13 @@ class RequestCounter:
         self.get_response = get_response
         self.rc = 0
     
+    def calcPhone(self, name):
+        
+        if 'a' <= name[0] <= 'h':
+            return "0000"
+        else:
+            return "1111"
+    
     def __call__(self, request):
         self.rc +=1 
         response = self.get_response(request)
@@ -23,7 +30,7 @@ class RequestCounter:
                 if phone :
                     response.data['phone'] = phone
                 else:
-                    cache.set(str(name), 121)
+                    cache.set(str(name), self.calcPhone(str(name)))
         if response.status_code == 200:
             response.data['request_count'] = self.rc
             response._is_rendered = False 
