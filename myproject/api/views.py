@@ -1,22 +1,44 @@
 from rest_framework.response import Response 
 from rest_framework.decorators import api_view 
-from base.models import Item 
-from .serializers import ItemSerializer
 import json
-from django.http import JsonResponse
 import random
-from api.utils import timeit
-from myproject.settings import mid_p
-from myproject.tasks import delayed_sum
-from myproject.async_tasks import run_tasks
-from celery.result import AsyncResult
-import asyncio
-
+from myproject.settings import Db
+from api.serializers import UserSerializer
+from .responses import *
 
 
 @api_view(['GET'])
 def attemptLogin(request): 
-    
+    email = str(request.GET.get('email')).lower()
+    passw = str(request.GET.get('password'))
+    data = {"email" : email, "password" : passw}
+
+    ser = UserSerializer(data = data)
+    if ser.is_valid():
+        user_data = Db.users.find_one(data, {"password" : 0})
+        if not user_data:
+            return Response({"error" : "user not found"}, status=404)
+        else:
+            return Response({"success": user_data})
+    else:
+        return Response({"error": "Invalid data"}, status=400)
+
+
+@api_view(['POST'])
+def signup(request):
+    data = request.data
+    email = str(data.get('email'))
+    passw = str(data.get('password'))
+
+    user_data = Db.users.find_one({"email" : email}, {"password" : 0})
+    if user_data:
+        return Response({"error" : "User with email already exists"})
+    else:
+        data = {"email" : email, "password" : passw}
+        Db.users.insert_one(data)
+        return 
+
+
 
 
 

@@ -2,9 +2,7 @@ from dataclasses import field
 from rest_framework import serializers 
 from base.models import Item 
 
-class ItemSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Item 
-        fields = '__all__' 
+class UserSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField()
+    password = serializers.CharField(max_length=100)
         
