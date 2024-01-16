@@ -1,15 +1,15 @@
-from django.http import JsonResponse
+from rest_framework.response import Response 
 
-def SuccessResponse(data, status=200, message = ""):
+def SuccessResponse(data = {}, status=200, message = "Data Fetched Successfully"):
     response_data = {
         'status': status,
         'data': data,
         'message' : message,
     }
-    return JsonResponse(response_data, status=status)
+    return Response(response_data, status=status)
 
 
-def ErrorResponse(data, status=400, message = ""):
+def ErrorResponse(data = {}, status=400, message = "Bad Request format"):
     
     response_data = {
         'status': status,
@@ -17,10 +17,10 @@ def ErrorResponse(data, status=400, message = ""):
         'message' : message,
         # Add any additional fields you want in the response
     }
-    return JsonResponse(response_data, status=status)
+    return Response(response_data, status=status)
 
 
-def NotFoundResponse(data, status = 404, message = ""):
+def NotFoundResponse(data = {}, status = 404, message = "Information for the request could not be located"):
     response_data = {
         'status': status,
         'data': data,
@@ -28,4 +28,4 @@ def NotFoundResponse(data, status = 404, message = ""):
         # Add any additional fields you want in the response
     }
 
-    return JsonResponse(response_data, status=status)
+    return Response(response_data, status=status)

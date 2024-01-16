@@ -15,13 +15,14 @@ def attemptLogin(request):
 
     ser = UserSerializer(data = data)
     if ser.is_valid():
-        user_data = Db.users.find_one(data, {"password" : 0})
+        user_data = Db.users.find_one(data, {"password" : 0, "_id": 0})
         if not user_data:
-            return Response({"error" : "user not found"}, status=404)
+            #improvement
+            return NotFoundResponse(message = "user with credentials could not be located", status=404)
         else:
-            return Response({"success": user_data})
+            return SuccessResponse(data= user_data, message="Login Successfull")
     else:
-        return Response({"error": "Invalid data"}, status=400)
+        return ErrorResponse(message= "Invalid data format", status=400)
 
 
 @api_view(['POST'])
@@ -30,74 +31,14 @@ def signup(request):
     email = str(data.get('email'))
     passw = str(data.get('password'))
 
-    user_data = Db.users.find_one({"email" : email}, {"password" : 0})
+    user_data = Db.users.find_one({"email" : email}, {"password" : 0, "_id": 0})
     if user_data:
-        return Response({"error" : "User with email already exists"})
+        return ErrorResponse(message = "User with email already exists")
     else:
         data = {"email" : email, "password" : passw}
         Db.users.insert_one(data)
-        return 
-
-
-
-
-
-# @api_view(['GET', 'POST'])
-# def getSampleData(request):
-#     if request.method == 'GET':
-#         print(mid_p)
-#         loop = asyncio.new_event_loop()
-#         asyncio.set_event_loop(loop)
-#         loop = asyncio.get_event_loop()
-#         loop.run_until_complete(run_tasks())
-#         loop.close()
-        
-#         return Response({"1": "Sample data "})
-#     else:
-#         return Response({"1": "POST data "})
-
-
-# @api_view(['GET'])
-# def monitorTask(request):
-#     t_id = str(request.GET.get('task_id'))
-#     result = AsyncResult(t_id)
-
-#     response_data = {
-#         'task_id': t_id,
-#         'status': result.status,
-#     }
-#     return Response(response_data)
-
-
-# @api_view(['POST'])
-# def addItem(request):
-#     serializer = ItemSerializer(data = request.data) 
-#     if serializer.is_valid():
-#         serializer.save() 
-    
-#     return Response(serializer.data)
-
-
-# @api_view(['GET'])
-# def getOrder(request):
-#     o_id = int(request.GET.get('order_id'))
-#     item = request.GET.get('item')
-
-#     return Response({"1: Bad request"})
-
-
-# @api_view(['POST'])
-# def insertOrders(request):
-
-#     # prod_ids = ["A", "B", "C", "D"]
-#     # orders_to_insert = []
-#     # for i in range(1000000):
-#     #     order = {"order_id": i, "item": "Product" + random.choice(prod_ids), "quantity": random.randint(1, 500)}
-#     #     orders_to_insert.append(order)
-    
-#     # if Db.Orders.insert_many(orders_to_insert):
-#     #     return JsonResponse({"1": "SuccesResponse"})
-#     return JsonResponse({"1" : "Error occured"})
+        data.pop("_id")
+        return SuccessResponse(message= "User created successfully", data = data)
 
 
 

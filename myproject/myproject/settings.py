@@ -30,10 +30,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-# DB_CONN = "mongodb://localhost:27017"
-# DB_CLIENT = pymongo.MongoClient(DB_CONN)
-# Db = DB_CLIENT['config']
-Db = ""
 # Application definition
 
 CELERY_BROKER_URL = 'memory://localhost/'
@@ -95,7 +91,6 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 DB_CONN = "mongodb://localhost:27017"
 DB_CLIENT = pymongo.MongoClient(DB_CONN)
 Db = DB_CLIENT['config']
-Db = ""
 
 
 # Password validation
