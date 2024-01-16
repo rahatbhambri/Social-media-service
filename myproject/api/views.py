@@ -1,12 +1,19 @@
 from rest_framework.response import Response 
-from rest_framework.decorators import api_view 
+from rest_framework.decorators import api_view , permission_classes
 import json
 import random
 from myproject.settings import Db
 from api.serializers import *
 from .responses import *
 from rest_framework.pagination import PageNumberPagination
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login
 
+
+
+@api_view(['GET'])
+def homepage(request):
+    return SuccessResponse(message="Please use /login endpoint to login") 
 
 @api_view(['GET'])
 def attemptLogin(request): 
@@ -47,6 +54,7 @@ def signup(request):
         return ErrorResponse(message="Bad Form Data")
 
 @api_view(['PUT'])
+@login_required
 def reactToFriend(request):
     data = request.data
     
@@ -98,6 +106,7 @@ def reactToFriend(request):
 
 
 @api_view(['GET'])
+@login_required
 def getFriends(request):
     u_mail = request.GET.get("user_email")
     user_data = Db.users.find_one({"email": u_mail}, {"email" : 1, "friends": 1, "_id":0})
@@ -109,6 +118,7 @@ def getFriends(request):
 
 
 @api_view(['GET'])
+@login_required
 def getPendingFriends(request):
     u_mail = request.GET.get("user_email")
     user_data = Db.users.find_one({"email": u_mail}, {"email" : 1, "incoming_requests": 1, "_id":0})
@@ -121,6 +131,7 @@ def getPendingFriends(request):
 
 
 @api_view(['GET'])
+@login_required
 def searchUsers(request):
     keyw = str(request.GET.get("keyword"))
 
