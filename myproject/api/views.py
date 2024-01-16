@@ -117,3 +117,24 @@ def getPendingFriends(request):
         return SuccessResponse(data = user_data)
     else:
         return NotFoundResponse(message= "user not found")
+
+
+@api_view(['GET'])
+def searchUsers(request):
+    keyw = str(request.GET.get("keyword"))
+
+    if "@" in keyw:
+        user_data = Db.users.find_one({"email": keyw}, {"_id":0})
+        if user_data :
+            return SuccessResponse(data = user_data)
+        else:
+            return NotFoundResponse(message= "user not found")
+    else:
+        query = {"name": {"$regex": keyw, "$options": "i"}}
+        users = list(Db.users.find(query, {"_id": 0}))
+        if users:
+            n = len(users)
+            data = dict(zip( list(range(n)), users ))
+            return SuccessResponse(data = data, message= "users fetched successfully")
+        else:
+            return NotFoundResponse("user not found")

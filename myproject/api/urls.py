@@ -8,5 +8,5 @@ urlpatterns = [
     path('editFriend', views.reactToFriend),
     path('friends', views.getFriends),
     path('pendingFriends', views.getPendingFriends), 
-    
+    path('search', views.searchUsers),
 ]
