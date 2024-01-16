@@ -48,6 +48,11 @@ INSTALLED_APPS = [
     'celery',
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+}
+
 mid_p = 'myproject.middlewares.request_counter.RequestCounter'
 
 

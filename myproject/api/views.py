@@ -5,6 +5,7 @@ import random
 from myproject.settings import Db
 from api.serializers import *
 from .responses import *
+from rest_framework.pagination import PageNumberPagination
 
 
 @api_view(['GET'])
@@ -132,9 +133,13 @@ def searchUsers(request):
     else:
         query = {"name": {"$regex": keyw, "$options": "i"}}
         users = list(Db.users.find(query, {"_id": 0}))
+        
+        paginator = PageNumberPagination()
+        paginated_data = paginator.paginate_queryset(users, request)
         if users:
-            n = len(users)
-            data = dict(zip( list(range(n)), users ))
-            return SuccessResponse(data = data, message= "users fetched successfully")
+            # n = len(users)
+            # data = dict(zip( list(range(n)), users ))
+            # return SuccessResponse(data = data, message= "users fetched successfully")
+            return paginator.get_paginated_response(paginated_data)
         else:
             return NotFoundResponse("user not found")
