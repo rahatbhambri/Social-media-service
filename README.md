@@ -1,11 +1,31 @@
-1) clone the repo 
-2) cd myproject - Here you will find docker files
-3) Make sure docker is running on your system at this point. Run docker-compose build.
-4) Run docker-compose up
+# MyProject
 
-Now test the endpoints using provided postman collection 
+## Description
 
+MyProject is a [brief description of your project]. Include information on what problem it solves, its main features, and any other relevant details.
 
+## Table of Contents
 
+- [Installation](#installation)
+- [Usage](#usage)
+- [Docker Setup](#docker-setup)
+- [Testing Endpoints](#testing-endpoints)
+- [Environment](#environment)
+- [Contributing](#contributing)
+- [License](#license)
 
-Tested on windows 11
+## Installation
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/your-username/myproject.git
+2.**Navigate to directory**
+    ```bash
+    cd myproject
+4. **Make sure you have Docker installed and running on your system.**
+5. **Build Docker images:**
+ ```bash
+docker-compose build
+5. **Run Docker containers:**
+    ```bash
+      docker-compose up 
