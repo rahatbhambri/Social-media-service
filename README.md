@@ -14,7 +14,7 @@ MyProject is a [brief description of your project]. Include information on what 
 
 1. **Clone the repository:**
    <pre>
-      git clone https://github.com/your-username/myproject.git
+      git clone https://github.com/rahatbhambri/Accunox-assign
    </pre>
 2. **Navigate to directory**
     <pre>
