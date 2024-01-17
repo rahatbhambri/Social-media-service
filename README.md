@@ -7,19 +7,15 @@ MyProject is a [brief description of your project]. Include information on what 
 ## Table of Contents
 
 - [Installation](#installation)
-- [Usage](#usage)
-- [Docker Setup](#docker-setup)
 - [Testing Endpoints](#testing-endpoints)
 - [Environment](#environment)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Installation
 
-**Clone the repository:**
+1. **Clone the repository:**
    <pre>
-   git clone https://github.com/your-username/myproject.git
-</pre>
+      git clone https://github.com/your-username/myproject.git
+   </pre>
 2. **Navigate to directory**
     <pre>
        cd myproject
