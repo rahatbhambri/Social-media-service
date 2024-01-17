@@ -8,6 +8,11 @@ from .responses import *
 from rest_framework.pagination import PageNumberPagination
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
+from rest_framework.permissions import IsAuthenticated
+from django.urls import reverse
+
+
 
 
 
@@ -21,11 +26,11 @@ def attemptLogin(request):
     passw = str(request.GET.get('password'))
     data = {"email" : email, "password" : passw}
 
+
     ser = UserSerializer(data = data)
     if ser.is_valid():
         user_data = Db.users.find_one(data, {"password" : 0, "_id": 0})
         if not user_data:
-            #improvement
             return NotFoundResponse(message = "user with credentials could not be located", status=404)
         else:
             return SuccessResponse(data= user_data, message="Login Successfull")
@@ -49,12 +54,12 @@ def signup(request):
             data = {"email" : email, "password" : passw, "name" : name}
             Db.users.insert_one(data)
             data.pop("_id")
+
             return SuccessResponse(message= "User created successfully", data = data)
     else:
         return ErrorResponse(message="Bad Form Data")
 
 @api_view(['PUT'])
-@login_required
 def reactToFriend(request):
     data = request.data
     
@@ -106,7 +111,7 @@ def reactToFriend(request):
 
 
 @api_view(['GET'])
-@login_required
+@permission_classes([IsAuthenticated])
 def getFriends(request):
     u_mail = request.GET.get("user_email")
     user_data = Db.users.find_one({"email": u_mail}, {"email" : 1, "friends": 1, "_id":0})
@@ -118,7 +123,6 @@ def getFriends(request):
 
 
 @api_view(['GET'])
-@login_required
 def getPendingFriends(request):
     u_mail = request.GET.get("user_email")
     user_data = Db.users.find_one({"email": u_mail}, {"email" : 1, "incoming_requests": 1, "_id":0})
@@ -131,7 +135,6 @@ def getPendingFriends(request):
 
 
 @api_view(['GET'])
-@login_required
 def searchUsers(request):
     keyw = str(request.GET.get("keyword"))
 
