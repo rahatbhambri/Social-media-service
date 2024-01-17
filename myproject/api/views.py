@@ -49,13 +49,8 @@ def attemptLogin(request):
 @api_view(['POST'])
 def signup(request):
     data = request.data
-    try:
-        email = str(request.user.username)
-        print(email)
-    except Exception as e:
-        # Handle token decoding errors
-        print(f"Error decoding token: {e}")
-
+    
+    email = str(data.get("email"))
     passw = str(data.get('password'))
     name = str(data.get('name'))
 

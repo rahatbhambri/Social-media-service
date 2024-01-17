@@ -1,9 +1,0 @@
-django
-requests
-djangorestframework
-pymongo
-# djongo 
-# celery<6
-# django-celery-results
-djangorestframework-simplejwt
-django_ratelimit
