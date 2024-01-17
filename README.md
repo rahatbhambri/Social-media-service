@@ -16,16 +16,20 @@ MyProject is a [brief description of your project]. Include information on what 
 
 ## Installation
 
-1. **Clone the repository:**
-   ```bash
+**Clone the repository:**
+   <pre>
    git clone https://github.com/your-username/myproject.git
-2.**Navigate to directory**
-    ```bash
-    cd myproject
+</pre>
+2. **Navigate to directory**
+    <pre>
+       cd myproject
+   </pre>
 4. **Make sure you have Docker installed and running on your system.**
 5. **Build Docker images:**
- ```bash
-docker-compose build
+  <pre>
+   docker-compose build
+</pre>
 5. **Run Docker containers:**
-    ```bash
-      docker-compose up 
+   <pre>
+     docker-compose up 
+   </pre> 
