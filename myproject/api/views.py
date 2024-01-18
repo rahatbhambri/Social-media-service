@@ -49,6 +49,7 @@ def attemptLogin(request):
         return ErrorResponse(message= "Invalid data format", status=400)
 
 
+#signup api
 @api_view(['POST'])
 def signup(request):
     data = request.data
