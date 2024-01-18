@@ -31,7 +31,7 @@ Social media service is a collection of endpoints which help build online social
    </pre> 
 
 ## Testing endpoints 
-Please find the link to postman collection attached
+Please reply the emails so that i can share the postman collection
 
 ## Environment 
 Tested on windows 11 
