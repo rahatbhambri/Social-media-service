@@ -10,6 +10,9 @@ from django.urls import reverse
 from datetime import datetime as dt
 from rest_framework_simplejwt.tokens import AccessToken
 from django_ratelimit.decorators import ratelimit
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.contrib.auth.models import User
+
 
 
 
@@ -57,10 +60,14 @@ def signup(request):
     ser = UserSignupSerializer(data = data)
     if ser.is_valid():
         user_data = Db.users.find_one({"email" : email}, {"password" : 0, "_id": 0})
-        if user_data:
+        dup = User.objects.filter(email=email).exists()
+        if user_data or dup:
             return ErrorResponse(message = "User with email already exists")
         else:
             data = {"email" : email, "password" : passw, "name" : name}
+            new_user = User.objects.create_user(username=email, password=passw, email=email)
+            new_user.save()
+
             Db.users.insert_one(data)
             data.pop("_id")
 
@@ -87,16 +94,23 @@ def reactToFriend(request):
     action = data.get('action')
 
     if action == 'send':
-        Db.users.find_one_and_update(
-            {"email" : f_email}, 
-            {"$push": {"incoming_requests": user_email}}
-        )
-        Db.users.find_one_and_update(
-            {"email": user_email},
-             {"$push": {"outgoing_requests": f_email}}
-        )    
-        return SuccessResponse(message= "Request sent successfully")
-    
+        u_data = Db.users.find_one({"email": user_email},{"_id" : 0})
+        #print(u_data, user_email)
+        outg = u_data.get("outgoing_requests", [])
+        u_fr = u_data.get("friends", [])
+
+        if f_email not in outg and f_email not in u_fr:
+            Db.users.find_one_and_update(
+                {"email" : f_email}, 
+                {"$push": {"incoming_requests": user_email}}
+            )
+            Db.users.find_one_and_update(
+                {"email": user_email},
+                {"$push": {"outgoing_requests": f_email}}
+            )    
+            return SuccessResponse(message= "Request sent successfully")
+        else:
+            return ErrorResponse(message="Duplicate request")
     elif action == 'accept':
         Db.users.find_one_and_update(
             {"email" : user_email}, 
@@ -115,6 +129,7 @@ def reactToFriend(request):
         return SuccessResponse(message= "Request Accepted successfully")
     
     elif action == 'reject':
+        print(user_email, f_email)
         Db.users.find_one_and_update(
             {"email" : user_email}, 
             {"$pull": {"incoming_requests": f_email}}
@@ -144,6 +159,7 @@ def getFriends(request):
     user_data = Db.users.find_one({"email": u_mail}, {"email" : 1, "friends": 1, "_id":0})
 
     if user_data :
+        user_data["friends"] = user_data.get("friends", [])
         return SuccessResponse(data = user_data)
     else:
         return NotFoundResponse(message= "user not found")
