@@ -14,7 +14,7 @@ Social media service is a collection of endpoints which help build online social
 
 1. **Clone the repository:**
    <pre>
-      git clone https://github.com/rahatbhambri/Accunox-assign
+      git clone [https://github.com/rahatbhambri/Accunox-assign](https://github.com/rahatbhambri/Social-media-service.git)
    </pre>
 2. **Navigate to directory**
    <pre>
