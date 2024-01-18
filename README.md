@@ -1,8 +1,8 @@
-# MyProject
+# Social media service
 
 ## Description
 
-MyProject is a [brief description of your project]. Include information on what problem it solves, its main features, and any other relevant details.
+Social media service is a collection of endpoints which help build online social circle of an individual. Functionalities include sending friend requests, reacting to friend requests etc. More functionality including messaging to friends etc will ve available soon 
 
 ## Table of Contents
 
@@ -17,15 +17,21 @@ MyProject is a [brief description of your project]. Include information on what 
       git clone https://github.com/rahatbhambri/Accunox-assign
    </pre>
 2. **Navigate to directory**
-    <pre>
-       cd myproject
+   <pre>
+      cd myproject
    </pre>
-4. **Make sure you have Docker installed and running on your system.**
+4. **Make sure you have Docker installed and running on your system at this point of time.**
 5. **Build Docker images:**
-  <pre>
-   docker-compose build
-</pre>
+   <pre>
+      docker-compose build
+   </pre>
 5. **Run Docker containers:**
    <pre>
-     docker-compose up 
+      docker-compose up 
    </pre> 
+
+## Testing endpoints 
+Please find the link to postman collection attached
+
+## Environment 
+Tested on windows 11 
