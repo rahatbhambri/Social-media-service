@@ -12,4 +12,5 @@ urlpatterns = [
     path('friends', views.getFriends),
     path('pendingFriends', views.getPendingFriends), 
     path('search', views.searchUsers),
+    path('sendMessage', views.sendMessage),
 ]

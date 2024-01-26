@@ -10,7 +10,7 @@ click-plugins==1.1.1
 click-repl==0.3.0
 colorama==0.4.6
 dataclasses==0.6
-Django==5.0.1
+Django
 django-celery-results==2.5.1
 django-ratelimit==4.1.0
 djangorestframework==3.14.0
@@ -25,6 +25,8 @@ PyJWT==2.8.0
 pymongo==4.6.1
 python-dateutil==2.8.2
 pytz==2023.3.post1
+redis
+redis-cli
 requests==2.31.0
 six==1.16.0
 sqlparse==0.4.4

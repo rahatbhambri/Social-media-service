@@ -12,6 +12,7 @@ from rest_framework_simplejwt.tokens import AccessToken
 from django_ratelimit.decorators import ratelimit
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import User
+from myproject.settings import redis
 
 
 
@@ -208,3 +209,17 @@ def searchUsers(request):
             return paginator.get_paginated_response(paginated_data)
         else:
             return NotFoundResponse("user not found")
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def sendMessage(request):
+
+    email = str(request.user.username)
+    data = request.data
+    message = str(data.get("message"))
+
+    print(email, data)
+
+    redis.hmset('user_data', {"email": email, "message": message}) 
+    print(redis.keys('*'))
+    return SuccessResponse(message="message set successfully")

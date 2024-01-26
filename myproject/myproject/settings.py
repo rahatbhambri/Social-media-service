@@ -86,6 +86,12 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'myproject.urls'
+import redis
+
+redis = redis.Redis(
+  host='redis-16002.c264.ap-south-1-1.ec2.cloud.redislabs.com',
+  port=16002,
+  password='ltcA4SUlwEGDEawL5jkBD4o7aGE9fpRc')
 
 TEMPLATES = [
     {
