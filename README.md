@@ -1,4 +1,4 @@
-# Social media service
+# Social media service (&#127470;&#127475;)
 
 ## Description
 
