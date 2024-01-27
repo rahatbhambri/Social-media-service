@@ -13,6 +13,7 @@ from django_ratelimit.decorators import ratelimit
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import User
 from myproject.settings import redis
+from myproject.tasks import delayed_sum
 
 
 
@@ -21,7 +22,9 @@ from myproject.settings import redis
 
 @api_view(['GET'])
 def homepage(request):
-    return SuccessResponse(message="Please use /login endpoint to login") 
+    result = delayed_sum.delay(5, 8)
+    return SuccessResponse(data = {"taskid ": result.id}, message="Please use /login endpoint to login") 
+
 
 @api_view(['GET'])
 def attemptLogin(request): 
@@ -221,5 +224,4 @@ def sendMessage(request):
     print(email, data)
 
     redis.hmset('user_data', {"email": email, "message": message}) 
-    print(redis.keys('*'))
     return SuccessResponse(message="message set successfully")

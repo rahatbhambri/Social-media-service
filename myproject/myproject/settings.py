@@ -93,6 +93,14 @@ redis = redis.Redis(
   port=16002,
   password='ltcA4SUlwEGDEawL5jkBD4o7aGE9fpRc')
 
+# Celery Configuration
+CELERY_BROKER_URL = 'redis://:ltcA4SUlwEGDEawL5jkBD4o7aGE9fpRc@redis-16002.c264.ap-south-1-1.ec2.cloud.redislabs.com:16002/0'
+CELERY_RESULT_BACKEND = 'redis://:ltcA4SUlwEGDEawL5jkBD4o7aGE9fpRc@redis-16002.c264.ap-south-1-1.ec2.cloud.redislabs.com:16002/0'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
