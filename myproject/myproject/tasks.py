@@ -7,4 +7,5 @@ def delayed_sum(a, b):
     d = random.randInt(5, 15)
     sleep(d)
     print(a+b, "Async result")
+    return a+b
 

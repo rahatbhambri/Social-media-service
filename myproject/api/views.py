@@ -14,6 +14,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import User
 from myproject.settings import redis
 from myproject.tasks import delayed_sum
+from celery.result import AsyncResult
+
 
 
 
@@ -25,6 +27,19 @@ def homepage(request):
     result = delayed_sum.delay(5, 8)
     return SuccessResponse(data = {"taskid ": result.id}, message="Please use /login endpoint to login") 
 
+@api_view(['GET'])
+def get_result(request):
+    # Retrieve the result for the given task ID
+    task_id = str(request.GET.get("task_id"))
+    result = AsyncResult(task_id)
+
+    if result.ready():
+        print(result.result, type(result.result))
+        # Task is completed, return the result
+        return SuccessResponse(data = {'status': 'Task completed', 'result': result.result})
+    else:
+        # Task is still processing
+        return ErrorResponse(message= 'Task still processing')
 
 @api_view(['GET'])
 def attemptLogin(request): 
