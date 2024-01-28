@@ -1,3 +1,3 @@
 
 
-def accumulate_message(from, to, message, )
+#def accumulate_message(from, to, message, )
