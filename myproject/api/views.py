@@ -13,8 +13,9 @@ from django_ratelimit.decorators import ratelimit
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import User
 from myproject.settings import redis
-from myproject.tasks import delayed_sum
+from myproject.tasks import delayed_sum, accumulate_message
 from celery.result import AsyncResult
+from .utils import *
 
 
 
@@ -32,6 +33,7 @@ def get_result(request):
     # Retrieve the result for the given task ID
     task_id = str(request.GET.get("task_id"))
     result = AsyncResult(task_id)
+    print(result.state)
 
     if result.ready():
         print(result.result, type(result.result))
@@ -228,15 +230,32 @@ def searchUsers(request):
         else:
             return NotFoundResponse("user not found")
 
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
+#convert to ws later 
 def sendMessage(request):
 
     email = str(request.user.username)
     data = request.data
     message = str(data.get("message"))
+    f_email = str(data.get("f_email"))
 
     print(email, data)
 
-    redis.hmset('user_data', {"email": email, "message": message}) 
+    #if friend is online then send to redis channel
+    #redis.hmset('user_data', {"email": email, "message": message})  
+    
+    #else add to unread
+    Db.users.update_one({"email" : f_email}, {"$addToSet" : {"unread" : email}})
+    accumulate_message(from_em = email, to_em = f_email, message= message)
+
     return SuccessResponse(message="message set successfully")
+
+
+# @api_view(["GET"])
+# @permission_classes([IsAuthenticated])
+# def sendMessage(request):
+
+#     email = str(request.user.username)
+
