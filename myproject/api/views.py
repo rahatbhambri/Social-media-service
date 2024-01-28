@@ -248,7 +248,7 @@ def sendMessage(request):
     
     #else add to unread
     Db.users.update_one({"email" : f_email}, {"$addToSet" : {"unread" : email}})
-    accumulate_message(from_em = email, to_em = f_email, message= message)
+    accumulate_message.delay(from_em = email, to_em = f_email, message= message)
 
     return SuccessResponse(message="message set successfully")
 
