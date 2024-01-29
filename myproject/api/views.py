@@ -28,6 +28,7 @@ def homepage(request):
     result = delayed_sum.delay(5, 8)
     return SuccessResponse(data = {"taskid ": result.id}, message="Please use /login endpoint to login") 
 
+
 @api_view(['GET'])
 def get_result(request):
     # Retrieve the result for the given task ID
@@ -106,7 +107,7 @@ def reactToFriend(request):
     
     try:
         email = str(request.user.username)
-        print(email)
+        #print(email)
     except Exception as e:
         # Handle token decoding errors
         print(f"Error decoding token: {e}")
@@ -114,9 +115,12 @@ def reactToFriend(request):
     user_email = email
     f_email = str(data.get('f_email'))
     action = data.get('action')
+    
+    u_data = Db.users.find_one({"email": user_email},{"_id" : 0})
+    if not u_data:
+        return ErrorResponse(message= "User not found")
 
     if action == 'send':
-        u_data = Db.users.find_one({"email": user_email},{"_id" : 0})
         #print(u_data, user_email)
         outg = u_data.get("outgoing_requests", [])
         u_fr = u_data.get("friends", [])
@@ -151,7 +155,7 @@ def reactToFriend(request):
         return SuccessResponse(message= "Request Accepted successfully")
     
     elif action == 'reject':
-        print(user_email, f_email)
+        #print(user_email, f_email)
         Db.users.find_one_and_update(
             {"email" : user_email}, 
             {"$pull": {"incoming_requests": f_email}}
@@ -231,15 +235,21 @@ def searchUsers(request):
             return NotFoundResponse("user not found")
 
 
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-#convert to ws later 
 def sendMessage(request):
 
     email = str(request.user.username)
     data = request.data
     message = str(data.get("message"))
     f_email = str(data.get("f_email"))
+
+    user_data = Db.users.find_one({"email" : email}) 
+
+    if f_email not in user_data.get("friends", []): 
+        return ErrorResponse(message= "USer does not have permission to message this user")
+
 
     print(email, data)
 
